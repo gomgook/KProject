@@ -1,6 +1,5 @@
 package com.gomguk.kproject.main
 
-import android.util.Log
 import com.gomguk.kproject.util.Constants.Companion.API_AUTHORIZATION_TOKEN
 import com.gomguk.kproject.util.Constants.Companion.API_HEADER_AUTHORIZATION
 import com.gomguk.kproject.util.Constants.Companion.API_PARAM_KEYWORD
@@ -8,11 +7,17 @@ import com.gomguk.kproject.util.Constants.Companion.API_URL
 import com.gomguk.kproject.util.Constants.Companion.SEARCH_KEYWORD
 import com.gomguk.kproject.util.Constants.Companion.TIMEOUT
 import com.gomguk.kproject.util.NetworkConnection
+import com.gomguk.kproject.util.model.DataWrapper
+import com.google.gson.Gson
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 class MainRepository {
-    fun getData() {
+    interface MainRepositoryListener {
+        fun onResult(data: DataWrapper)
+    }
+
+    fun getData(listener: MainRepositoryListener) {
         val params = HashMap<String, String>()
 
         try {
@@ -28,7 +33,9 @@ class MainRepository {
         NetworkConnection.connect(
             listener = object : NetworkConnection.NetworkConnectionListener {
                 override fun onPostExecute(result: String?) {
-                    Log.e("TEST", "onPostExecute: $result")
+                    val data = Gson().fromJson(result, DataWrapper::class.java)
+
+                    listener.onResult(data)
                 }
             },
             url = API_URL,
