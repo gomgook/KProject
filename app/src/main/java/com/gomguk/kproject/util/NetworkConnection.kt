@@ -200,7 +200,7 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
         HTTP("HTTP"), HTTPS("HTTPS"), NONE("NONE");
     }
 
-    enum class RequestType(val string: String) {
-        GET("GET"), POST("POST"), PUT("PUT"), DELETE("DELETE")
+    enum class RequestType {
+        GET, POST, PUT, DELETE
     }
 }

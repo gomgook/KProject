@@ -13,6 +13,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         presenter = MainPresenter(MainRepository.getInstance(), this)
 
-        presenter.getData()
+        presenter.loadData()
     }
 }

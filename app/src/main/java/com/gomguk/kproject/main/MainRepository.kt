@@ -1,6 +1,12 @@
 package com.gomguk.kproject.main
 
 import android.util.Log
+import com.gomguk.kproject.util.Constants.Companion.API_AUTHORIZATION_TOKEN
+import com.gomguk.kproject.util.Constants.Companion.API_HEADER_AUTHORIZATION
+import com.gomguk.kproject.util.Constants.Companion.API_PARAM_KEYWORD
+import com.gomguk.kproject.util.Constants.Companion.API_URL
+import com.gomguk.kproject.util.Constants.Companion.SEARCH_KEYWORD
+import com.gomguk.kproject.util.Constants.Companion.TIMEOUT
 import com.gomguk.kproject.util.NetworkConnection
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -10,14 +16,14 @@ class MainRepository {
         val params = HashMap<String, String>()
 
         try {
-            params[API_PARAM_KEYWORD] = URLEncoder.encode("starwars", "UTF-8")
+            params[API_PARAM_KEYWORD] = URLEncoder.encode(SEARCH_KEYWORD, "UTF-8")
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
         }
 
         val headers = HashMap<String, String>()
 
-        headers["Authorization"] = "KakaoAK 23ca94e613e3e79350430d40dab794f1"
+        headers[API_HEADER_AUTHORIZATION] = API_AUTHORIZATION_TOKEN
 
         NetworkConnection.connect(
             listener = object : NetworkConnection.NetworkConnectionListener {
@@ -27,7 +33,7 @@ class MainRepository {
             },
             url = API_URL,
             params = params,
-            timeOut = 2000,
+            timeOut = TIMEOUT,
             requestType = NetworkConnection.RequestType.GET,
             headers = headers,
             requestBody = null,
@@ -35,10 +41,6 @@ class MainRepository {
     }
 
     companion object {
-        private const val API_PARAM_KEYWORD = "query"
-
-        private const val API_URL = "https://dapi.kakao.com/v3/search/book"
-
         private var INSTANCE: MainRepository? = null
 
         fun getInstance(): MainRepository {
