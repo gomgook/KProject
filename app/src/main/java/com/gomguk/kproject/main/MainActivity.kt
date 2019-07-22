@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), MainContract.View {
     override lateinit var presenter: MainPresenter
 
-    private val adapter: MainRecyclerViewAdapter = MainRecyclerViewAdapter()
+    private val adapter: MainRecyclerViewAdapter = MainRecyclerViewAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
