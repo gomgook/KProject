@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.gomguk.kproject.R
 import com.gomguk.kproject.content.ContentActivity
 import com.gomguk.kproject.util.model.Document
+import com.gomguk.kproject.util.view.loadImage
 
 class MainRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
     private var data: List<Document> = ArrayList()
@@ -41,6 +42,9 @@ class MainRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapt
 
             intent.putExtra("data", currentData)
             context.startActivity(intent)
+        }
+        currentData.thumbnail?.let {
+            viewHolder.image.loadImage(it)
         }
         viewHolder.title.text = currentData.title
     }
