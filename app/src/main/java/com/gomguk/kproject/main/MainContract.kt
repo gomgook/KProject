@@ -6,7 +6,7 @@ import com.gomguk.kproject.util.model.Document
 
 interface MainContract {
     interface View: BaseView<MainPresenter> {
-        fun setAdapterData(data: List<Document>)
+        fun setAdapterData(data: List<Document>, isAdd: Boolean)
     }
 
     interface Presenter: BasePresenter
