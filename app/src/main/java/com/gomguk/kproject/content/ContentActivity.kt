@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.gomguk.kproject.R
 import com.gomguk.kproject.util.model.Document
+import com.gomguk.kproject.util.view.loadImage
 import kotlinx.android.synthetic.main.activity_content.*
 
 class ContentActivity : AppCompatActivity(), ContentContract.View {
@@ -21,5 +22,9 @@ class ContentActivity : AppCompatActivity(), ContentContract.View {
 
     private fun setView(data: Document) {
         text.text = data.contents
+
+        data.thumbnail?.let {
+            image.loadImage(it)
+        }
     }
 }
