@@ -1,6 +1,18 @@
 package com.gomguk.kproject.util
 
 import android.os.AsyncTask
+import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_HEADERS
+import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_PARAMS
+import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_REQUEST_BODY
+import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_REQUEST_BODY_TYPE
+import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_REQUEST_TYPE
+import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_TIMEOUT
+import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_URL
+import com.gomguk.kproject.util.Constants.Companion.ERROR_EMPTY_URL
+import com.gomguk.kproject.util.Constants.Companion.ERROR_REQUEST_TYPE_NOT_SUPPORTED
+import com.gomguk.kproject.util.Constants.Companion.ERROR_RESPONSE_CODE_ERROR
+import com.gomguk.kproject.util.Constants.Companion.ERROR_SCHEME_NOT_SUPPORTED
+import com.gomguk.kproject.util.Constants.Companion.ERROR_TIMEOUT_MISSING
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.StringBuilder
@@ -180,20 +192,6 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
                     requestBody = requestBody,
                     requestBodyType = requestBodyType)
         }
-
-        private const val CONNECTION_PARAM_URL = "url"
-        private const val CONNECTION_PARAM_PARAMS = "params"
-        private const val CONNECTION_PARAM_TIMEOUT = "timeout"
-        private const val CONNECTION_PARAM_REQUEST_TYPE = "request_type"
-        private const val CONNECTION_PARAM_HEADERS = "headers"
-        private const val CONNECTION_PARAM_REQUEST_BODY = "request_body"
-        private const val CONNECTION_PARAM_REQUEST_BODY_TYPE = "request_body_type"
-
-        private const val ERROR_EMPTY_URL = "Url is empty."
-        private const val ERROR_TIMEOUT_MISSING = "Timeout invalid. Timeout should be over 0."
-        private const val ERROR_REQUEST_TYPE_NOT_SUPPORTED = "Not supported REST request type. We support GET, POST, PUT, DELETE only."
-        private const val ERROR_SCHEME_NOT_SUPPORTED = "Not supported scheme. We support HTTP or HTTPS only."
-        private const val ERROR_RESPONSE_CODE_ERROR = "The response code is not 200. requestCode:"
     }
 
     enum class SchemeType(val string: String) {
