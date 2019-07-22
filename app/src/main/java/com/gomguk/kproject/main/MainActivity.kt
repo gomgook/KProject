@@ -21,11 +21,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         swipeRefreshLayout.setRecyclerView(recyclerView)
         swipeRefreshLayout.setAdapter(adapter)
         swipeRefreshLayout.setLayoutManager(GridLayoutManager(this, 2))
+        swipeRefreshLayout.setOnRefreshListener {
+            presenter.loadData()
+        }
 
+        // First loading.
         presenter.loadData()
     }
 
     override fun setAdapterData(data: List<Document>) {
         adapter.setData(data)
+
+        // Flag to end refresh.
+        swipeRefreshLayout.isRefreshing = false
     }
 }
