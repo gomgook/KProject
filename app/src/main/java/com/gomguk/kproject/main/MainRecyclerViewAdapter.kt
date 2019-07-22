@@ -1,15 +1,19 @@
 package com.gomguk.kproject.main
 
+import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.gomguk.kproject.R
+import com.gomguk.kproject.content.ContentActivity
 import com.gomguk.kproject.util.model.Document
 
-class MainRecyclerViewAdapter : RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
+class MainRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
     private var data: List<Document> = ArrayList()
 
     fun setData(data: List<Document>) {
@@ -32,10 +36,17 @@ class MainRecyclerViewAdapter : RecyclerView.Adapter<MainRecyclerViewAdapter.Vie
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val currentData = data[position]
 
+        viewHolder.layout.setOnClickListener {
+            val intent = Intent(context, ContentActivity::class.java)
+
+            intent.putExtra("data", currentData)
+            context.startActivity(intent)
+        }
         viewHolder.title.text = currentData.title
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val layout: RelativeLayout = itemView.findViewById(R.id.layout)
         val image: ImageView = itemView.findViewById(R.id.image)
         val title: TextView = itemView.findViewById(R.id.title)
     }
