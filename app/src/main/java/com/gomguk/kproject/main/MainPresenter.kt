@@ -6,6 +6,7 @@ class MainPresenter(private val repository: MainRepository, val view: MainContra
     fun loadData() {
         repository.getData(object : MainRepository.MainRepositoryListener {
             override fun onResult(data: DataWrapper) {
+                view.setAdapterData(data.documents)
             }
         })
     }

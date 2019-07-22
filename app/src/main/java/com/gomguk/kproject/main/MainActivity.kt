@@ -4,10 +4,13 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import com.gomguk.kproject.R
+import com.gomguk.kproject.util.model.Document
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View {
     override lateinit var presenter: MainPresenter
+
+    private val adapter: MainRecyclerViewAdapter = MainRecyclerViewAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,10 +18,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         presenter = MainPresenter(MainRepository.getInstance(), this)
 
-        swipeRefreshLayout.setAdapter(MainRecyclerViewAdapter())
         swipeRefreshLayout.setRecyclerView(recyclerView)
+        swipeRefreshLayout.setAdapter(adapter)
         swipeRefreshLayout.setLayoutManager(GridLayoutManager(this, 2))
 
         presenter.loadData()
+    }
+
+    override fun setAdapterData(data: List<Document>) {
+        adapter.setData(data)
     }
 }
