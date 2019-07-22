@@ -17,8 +17,12 @@ import com.gomguk.kproject.util.view.loadImage
 class MainRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
     private var data: List<Document> = ArrayList()
 
-    fun setData(data: List<Document>) {
-        this.data = data
+    fun setData(data: List<Document>, isAdd: Boolean) {
+        if (isAdd) {
+            this.data = this.data.plus(data)
+        } else {
+            this.data = data
+        }
         notifyDataSetChanged()
     }
 
