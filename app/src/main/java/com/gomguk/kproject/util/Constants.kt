@@ -2,7 +2,7 @@ package com.gomguk.kproject.util
 
 class Constants {
     companion object {
-        const val SEARCH_KEYWORD = "starwars"
+        const val SEARCH_KEYWORD = "스타워즈"
         const val PAGE_SIZE = 10
 
         const val API_PARAM_KEYWORD = "query"

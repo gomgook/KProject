@@ -25,7 +25,9 @@ class ContentActivity : AppCompatActivity(), ContentContract.View {
     }
 
     private fun setView(data: Document) {
-        text.text = data.contents
+        titleText.text = data.title
+        publisherText.text = data.publisher
+        contentText.text = data.contents
 
         data.thumbnail?.let {
             image.loadImage(it)
