@@ -18,7 +18,7 @@ import java.net.URLEncoder
 class MainRepository: MainContract.Model, KoinComponent {
     private var currentPage = 1
     private var isPageEnd = false
-    private val gson: Gson by inject()
+    private val gSon: Gson by inject()
 
     override fun getData(isAdd: Boolean, listener: MainContract.Model.MainRepositoryListener) {
         if (isAdd && isPageEnd) return
@@ -41,7 +41,7 @@ class MainRepository: MainContract.Model, KoinComponent {
         NetworkConnection.connect(
             listener = object : NetworkConnection.NetworkConnectionListener {
                 override fun onPostExecute(result: String?) {
-                    val data = gson.fromJson(result, DataWrapper::class.java)
+                    val data = gSon.fromJson(result, DataWrapper::class.java)
                     isPageEnd = data.meta.is_end
 
                     listener.onResult(data, isAdd)
