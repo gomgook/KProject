@@ -1,13 +1,24 @@
 package com.gomguk.kproject.main
 
-import com.gomguk.kproject.base.BasePresenter
-import com.gomguk.kproject.base.BaseView
+import com.gomguk.kproject.util.model.DataWrapper
 import com.gomguk.kproject.util.model.Document
 
 interface MainContract {
-    interface View: BaseView<MainPresenter> {
+    interface Model {
+        interface MainRepositoryListener {
+            fun onResult(data: DataWrapper, isAdd: Boolean)
+        }
+
+        fun getData(isAdd: Boolean, listener: MainRepositoryListener)
+    }
+
+    interface View {
         fun setAdapterData(data: List<Document>, isAdd: Boolean)
     }
 
-    interface Presenter: BasePresenter
+    interface Presenter {
+        fun loadData(isAdd: Boolean)
+
+        fun isLoading(): Boolean
+    }
 }

@@ -1,10 +1,12 @@
 package com.gomguk.kproject.content
 
-import com.gomguk.kproject.base.BasePresenter
-import com.gomguk.kproject.base.BaseView
+import android.content.Intent
+import com.gomguk.kproject.util.model.Document
 
 interface ContentContract {
-    interface View: BaseView<ContentPresenter>
+    interface View
 
-    interface Presenter: BasePresenter
+    interface Presenter {
+        fun getData(intent: Intent): Document
+    }
 }
