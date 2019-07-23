@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.gomguk.kproject.R
 import com.gomguk.kproject.content.ContentActivity
 import com.gomguk.kproject.util.model.Document
+import com.gomguk.kproject.util.view.applyRippleAnimation
 import com.gomguk.kproject.util.view.loadImage
 
 class MainRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
@@ -41,6 +42,7 @@ class MainRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapt
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val currentData = data[position]
 
+        viewHolder.layout.applyRippleAnimation()
         viewHolder.layout.setOnClickListener {
             val intent = Intent(context, ContentActivity::class.java)
 
