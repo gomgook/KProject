@@ -194,8 +194,8 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
         }
     }
 
-    enum class SchemeType(val string: String) {
-        HTTP("HTTP"), HTTPS("HTTPS"), NONE("NONE");
+    enum class SchemeType {
+        HTTP, HTTPS, NONE;
     }
 
     enum class RequestType {
