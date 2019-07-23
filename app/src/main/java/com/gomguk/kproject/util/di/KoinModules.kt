@@ -10,12 +10,15 @@ import com.google.gson.Gson
 import org.koin.dsl.module.module
 
 val applicationModule = module {
+    // Main 화면에 사용되는 DI
     factory<MainContract.Presenter> { (view: MainContract.View) ->
         MainPresenter(
             MainRepository.getInstance(),
             view
         )
     }
+
+    // Content 화면에 사용되는 DI.
     factory<ContentContract.Presenter> { (view: ContentContract.View) ->
         ContentPresenter(
             ContentRepository.getInstance(),
@@ -25,6 +28,9 @@ val applicationModule = module {
 }
 
 val gSonModule = module {
+
+    // Gson 객체 DI.
+    // TODO - 메모리 사용 개선을 위한 Gson 객체 singleton화.
     single { Gson() }
 }
 

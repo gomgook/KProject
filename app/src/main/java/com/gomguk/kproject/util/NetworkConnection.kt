@@ -27,6 +27,9 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) {
         fun onPostExecute(result: String?)
     }
 
+    /**
+     * Network connection 실행에 필요한 변수들을 넘겨받는 함수.
+     */
     fun execute(
         url: String,
         params: HashMap<String, String>?,
@@ -46,8 +49,14 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) {
         connectionParams[CONNECTION_PARAM_REQUEST_BODY] = requestBody
         connectionParams[CONNECTION_PARAM_REQUEST_BODY_TYPE] = requestBodyType
 
+        // 기존의 AsyncTask에서 처리하던 내용을 Coroutine을 통해 처리했다.
+        // Main Thread에서 처리할 내용.
         CoroutineScope(Dispatchers.Main).launch {
+
+            // Thread Pool의 Thread를 사용, connection logic은 Main Thread가 아닌 background에서 진행되도록 했다.
             val result = CoroutineScope(Dispatchers.IO).async {
+
+                // 통신 결과를 result variable로 넘긴다.
                 return@async connectInternal(connectionParams)
             }.await()
 
@@ -102,6 +111,7 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) {
 
             val schemeType = checkSchemeType(it)
 
+            // HttpURLConnection과 HttpsURLConnection 각각의 로직에 대응하기 위해 if 문으로 구별함.
             if (schemeType == SchemeType.HTTP) {
                 val httpConn = conn as HttpURLConnection
 
@@ -160,12 +170,18 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) {
         return ""
     }
 
+    /**
+     * 각종 header를 URLConnection에 key 값과 value 값으로 붙이는 작업을 한다.
+     */
     private fun setRequestHeader(conn: URLConnection, headers: HashMap<String, String>) {
         headers.forEach {
             conn.addRequestProperty(it.key, it.value)
         }
     }
 
+    /**
+     * String 형태로 들어온 url 앞부분의 scheme 부분으로 http인지 https인지 구별한다.
+     */
     private fun checkSchemeType(string: String): SchemeType {
         return when {
             string.startsWith("http://") -> SchemeType.HTTP

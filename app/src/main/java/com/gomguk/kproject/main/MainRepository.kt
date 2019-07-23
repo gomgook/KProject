@@ -15,9 +15,13 @@ import org.koin.standalone.inject
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
+// Koin DI는 Activity에서만 적용이 가능하므로, Activity 외의 class에서 사용하기 위해서는 KoinComponent를 implement할 필요가 있다.
 class MainRepository: MainContract.Model, KoinComponent {
+
+    // Paging 처리를 위한 values.
     private var currentPage = 1
     private var isPageEnd = false
+
     private val gSon: Gson by inject()
 
     override fun getData(isAdd: Boolean, listener: MainContract.Model.MainRepositoryListener) {
