@@ -13,7 +13,7 @@ import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 class MainActivity : AppCompatActivity(), MainContract.View {
-    private val presenter: MainContract.Presenter by inject { parametersOf(MainRepository.getInstance(), this) }
+    private val presenter: MainContract.Presenter by inject { parametersOf(this) }
     private val adapter: MainRecyclerViewAdapter = MainRecyclerViewAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -9,17 +9,16 @@ import com.gomguk.kproject.main.MainRepository
 import org.koin.dsl.module.module
 
 val applicationModule = module(override = true) {
-    factory<MainContract.Presenter> { (repository: MainRepository, view: MainContract.View) ->
+    factory<MainContract.Presenter> { (view: MainContract.View) ->
         MainPresenter(
-            repository,
+            MainRepository.getInstance(),
             view
         )
     }
-    factory<ContentContract.Presenter> { (repository: ContentRepository, view: ContentContract.View) ->
+    factory<ContentContract.Presenter> { (view: ContentContract.View) ->
         ContentPresenter(
-            repository,
+            ContentRepository.getInstance(),
             view
         )
     }
-    single { MainRepository }
 }

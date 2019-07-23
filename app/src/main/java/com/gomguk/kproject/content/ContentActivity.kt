@@ -13,7 +13,7 @@ import org.koin.core.parameter.parametersOf
 
 
 class ContentActivity : AppCompatActivity(), ContentContract.View {
-    private val presenter: ContentContract.Presenter by inject { parametersOf(ContentRepository.getInstance(), this) }
+    private val presenter: ContentContract.Presenter by inject { parametersOf(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -10,18 +10,15 @@ import com.gomguk.kproject.util.Constants.Companion.TIMEOUT
 import com.gomguk.kproject.util.NetworkConnection
 import com.gomguk.kproject.util.model.DataWrapper
 import com.google.gson.Gson
+import org.koin.standalone.KoinComponent
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
-class MainRepository {
+class MainRepository: MainContract.Model, KoinComponent {
     private var currentPage = 1
     private var isPageEnd = false
 
-    interface MainRepositoryListener {
-        fun onResult(data: DataWrapper, isAdd: Boolean)
-    }
-
-    fun getData(isAdd: Boolean, listener: MainRepositoryListener) {
+    override fun getData(isAdd: Boolean, listener: MainContract.Model.MainRepositoryListener) {
         if (isAdd && isPageEnd) return
         if (!isAdd) currentPage = 1
 
