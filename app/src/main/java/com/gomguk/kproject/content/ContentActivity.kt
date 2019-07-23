@@ -8,17 +8,18 @@ import com.gomguk.kproject.util.view.loadImage
 import kotlinx.android.synthetic.main.activity_content.*
 import android.support.v4.app.NavUtils
 import com.gomguk.kproject.R
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 
 class ContentActivity : AppCompatActivity(), ContentContract.View {
-    override lateinit var presenter: ContentPresenter
+    private val presenter: ContentContract.Presenter by inject { parametersOf(ContentRepository.getInstance(), this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_content)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        presenter = ContentPresenter(ContentRepository.getInstance(), this)
         val data = presenter.getData(intent)
 
         setView(data)

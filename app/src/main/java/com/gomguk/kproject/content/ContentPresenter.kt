@@ -5,7 +5,7 @@ import com.gomguk.kproject.util.model.Document
 
 class ContentPresenter(private val repository: ContentRepository, val view: ContentContract.View) :
     ContentContract.Presenter {
-    fun getData(intent: Intent): Document {
+    override fun getData(intent: Intent): Document {
         return repository.getData(intent)
     }
 }

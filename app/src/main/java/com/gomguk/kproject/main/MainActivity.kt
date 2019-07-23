@@ -9,17 +9,16 @@ import com.gomguk.kproject.util.Constants.Companion.PAGE_SIZE
 import com.gomguk.kproject.util.model.Document
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class MainActivity : AppCompatActivity(), MainContract.View {
-    override lateinit var presenter: MainPresenter
-
+    private val presenter: MainContract.Presenter by inject { parametersOf(MainRepository.getInstance(), this) }
     private val adapter: MainRecyclerViewAdapter = MainRecyclerViewAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        presenter = MainPresenter(MainRepository.getInstance(), this)
 
         swipeRefreshLayout.setRecyclerView(recyclerView)
         swipeRefreshLayout.setAdapter(adapter)
