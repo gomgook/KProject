@@ -18,7 +18,7 @@ class ContentActivity : AppCompatActivity(), ContentContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_content)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val data = presenter.getData(intent)
 
@@ -38,7 +38,7 @@ class ContentActivity : AppCompatActivity(), ContentContract.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
-                NavUtils.navigateUpFromSameTask(this)
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
