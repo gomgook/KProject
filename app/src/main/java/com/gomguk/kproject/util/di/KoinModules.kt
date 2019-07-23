@@ -24,8 +24,8 @@ val applicationModule = module {
     }
 }
 
-val gsonModule = module {
+val gSonModule = module {
     single { Gson() }
 }
 
-val modules = listOf(applicationModule, gsonModule)
+val modules = listOf(applicationModule, gSonModule)
