@@ -1,8 +1,8 @@
 package com.gomguk.kproject.util.view
 
 import android.os.Build
-import android.support.annotation.RequiresApi
 import android.view.View
+import androidx.annotation.RequiresApi
 
 fun View.applyRippleAnimation() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
