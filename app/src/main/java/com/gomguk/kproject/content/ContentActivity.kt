@@ -1,12 +1,11 @@
 package com.gomguk.kproject.content
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.gomguk.kproject.util.model.Document
 import com.gomguk.kproject.util.view.loadImage
 import kotlinx.android.synthetic.main.activity_content.*
-import android.support.v4.app.NavUtils
+import androidx.appcompat.app.AppCompatActivity
 import com.gomguk.kproject.R
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
