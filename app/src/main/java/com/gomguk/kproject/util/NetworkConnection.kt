@@ -1,6 +1,5 @@
 package com.gomguk.kproject.util
 
-import android.os.AsyncTask
 import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_HEADERS
 import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_PARAMS
 import com.gomguk.kproject.util.Constants.Companion.CONNECTION_PARAM_REQUEST_BODY
@@ -21,19 +20,22 @@ import java.net.URL
 import java.net.URLConnection
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
+import kotlinx.coroutines.*
 
-class NetworkConnection(private val listener: NetworkConnectionListener?) : AsyncTask<HashMap<*, *>, Any, String>() {
+class NetworkConnection(private val listener: NetworkConnectionListener?) {
     interface NetworkConnectionListener {
         fun onPostExecute(result: String?)
     }
 
-    fun execute(url: String,
-                params: HashMap<String, String>?,
-                timeOut: Int,
-                requestType: RequestType?,
-                headers: HashMap<String, String>?,
-                requestBody: String?,
-                requestBodyType: String?) {
+    fun execute(
+        url: String,
+        params: HashMap<String, String>?,
+        timeOut: Int,
+        requestType: RequestType?,
+        headers: HashMap<String, String>?,
+        requestBody: String?,
+        requestBodyType: String?
+    ) {
         val connectionParams = HashMap<String, Any?>()
 
         connectionParams[CONNECTION_PARAM_URL] = url
@@ -44,11 +46,16 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
         connectionParams[CONNECTION_PARAM_REQUEST_BODY] = requestBody
         connectionParams[CONNECTION_PARAM_REQUEST_BODY_TYPE] = requestBodyType
 
-        this.execute(connectionParams)
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = CoroutineScope(Dispatchers.IO).async {
+                return@async connectInternal(connectionParams)
+            }.await()
+
+            listener?.onPostExecute(result)
+        }
     }
 
-    override fun doInBackground(vararg params: HashMap<*, *>?): String {
-        val requestParams = params[0] as HashMap<String, Any?>
+    private fun connectInternal(requestParams: HashMap<String, Any?>): String {
         val urlStr = requestParams[CONNECTION_PARAM_URL] as String?
 
         urlStr?.let {
@@ -61,13 +68,13 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
             }
 
             val timeOut = requestParams[CONNECTION_PARAM_TIMEOUT] as Int?
-                    ?: throw Exception(ERROR_TIMEOUT_MISSING)
+                ?: throw Exception(ERROR_TIMEOUT_MISSING)
             if (timeOut < 0) {
                 throw Exception(ERROR_TIMEOUT_MISSING)
             }
 
             val requestType = requestParams[CONNECTION_PARAM_REQUEST_TYPE]
-                    ?: throw Exception(ERROR_REQUEST_TYPE_NOT_SUPPORTED)
+                ?: throw Exception(ERROR_REQUEST_TYPE_NOT_SUPPORTED)
 
             val url = URL(urlStrSb.toString())
             val conn = url.openConnection()
@@ -80,7 +87,8 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
             }
 
             if (requestParams[CONNECTION_PARAM_REQUEST_BODY] != null
-                    && requestParams[CONNECTION_PARAM_REQUEST_BODY_TYPE] != null) {
+                && requestParams[CONNECTION_PARAM_REQUEST_BODY_TYPE] != null
+            ) {
                 val requestBody: String = requestParams[CONNECTION_PARAM_REQUEST_BODY] as String
                 val requestBodyType: String = requestParams[CONNECTION_PARAM_REQUEST_BODY_TYPE] as String
 
@@ -152,12 +160,6 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
         return ""
     }
 
-    override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
-
-        listener?.onPostExecute(result)
-    }
-
     private fun setRequestHeader(conn: URLConnection, headers: HashMap<String, String>) {
         headers.forEach {
             conn.addRequestProperty(it.key, it.value)
@@ -173,24 +175,27 @@ class NetworkConnection(private val listener: NetworkConnectionListener?) : Asyn
     }
 
     companion object {
-        fun connect(listener: NetworkConnectionListener,
-                    url: String,
-                    params: HashMap<String, String>?,
-                    timeOut: Int,
-                    requestType: RequestType?,
-                    headers: HashMap<String, String>?,
-                    requestBody: String?,
-                    requestBodyType: String?) {
+        fun connect(
+            listener: NetworkConnectionListener,
+            url: String,
+            params: HashMap<String, String>?,
+            timeOut: Int,
+            requestType: RequestType?,
+            headers: HashMap<String, String>?,
+            requestBody: String?,
+            requestBodyType: String?
+        ) {
             val networkConnection = NetworkConnection(listener)
 
             networkConnection.execute(
-                    url = url,
-                    params = params,
-                    timeOut = timeOut,
-                    requestType = requestType,
-                    headers = headers,
-                    requestBody = requestBody,
-                    requestBodyType = requestBodyType)
+                url = url,
+                params = params,
+                timeOut = timeOut,
+                requestType = requestType,
+                headers = headers,
+                requestBody = requestBody,
+                requestBodyType = requestBodyType
+            )
         }
     }
 
